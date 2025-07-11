@@ -1,9 +1,9 @@
-<div class="col-md-12">
-  <div class="card card-container">
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
     <img
       id="profile-img"
       src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-      class="profile-img-card"
+      class="w-24 h-24 mx-auto rounded-full"
     />
     <form
       *ngIf="!isLoggedIn"
@@ -11,58 +11,68 @@
       (ngSubmit)="f.form.valid && onSubmit()"
       #f="ngForm"
       novalidate
+      class="space-y-6"
     >
-      <div class="form-group">
-        <label for="username">Username</label>
+      <div>
+        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
         <input
           type="text"
-          class="form-control"
+          id="username"
           name="username"
           [(ngModel)]="form.username"
           required
           #username="ngModel"
-          [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
+          class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          [ngClass]="{ 'border-red-500 focus:ring-red-500 focus:border-red-500': f.submitted && username.errors }"
         />
-        <div *ngIf="username.errors && f.submitted" class="invalid-feedback">
-          Username is required!
+        <div *ngIf="username.errors && f.submitted" class="mt-1 text-xs text-red-600">
+          <div *ngIf="username.errors['required']">Username is required!</div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
         <input
           type="password"
-          class="form-control"
+          id="password"
           name="password"
           [(ngModel)]="form.password"
           required
           minlength="6"
           #password="ngModel"
-          [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
+          class="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          [ngClass]="{ 'border-red-500 focus:ring-red-500 focus:border-red-500': f.submitted && password.errors }"
         />
-        <div *ngIf="password.errors && f.submitted" class="invalid-feedback">
-          <div *ngIf="password.errors['required']">Password is required</div>
+        <div *ngIf="password.errors && f.submitted" class="mt-1 text-xs text-red-600">
+          <div *ngIf="password.errors['required']">Password is required.</div>
           <div *ngIf="password.errors['minlength']">
-            Password must be at least 6 characters
+            Password must be at least 6 characters.
           </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <button class="btn btn-primary btn-block" [disabled]="f.invalid">
+      <div>
+        <button
+          type="submit"
+          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+          [disabled]="f.invalid"
+        >
           Login
         </button>
       </div>
 
-      <div class="form-group">
-        <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger" role="alert">
-          Login failed: {{ errorMessage }}
-        </div>
+      <div *ngIf="f.submitted && isLoginFailed" class="p-4 mt-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+        Login failed: {{ errorMessage }}
       </div>
     </form>
 
-    <div class="alert alert-success" *ngIf="isLoggedIn">
-      Logged in as {{ roles }}. <!-- Display roles or username -->
+    <div *ngIf="isLoggedIn" class="p-4 mt-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
+      Logged in as {{ username }}. <!-- Updated to show username from component -->
+    </div>
+    <div class="text-sm text-center">
+      <p>Don't have an account?
+        <a routerLink="/register" class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a>
+      </p>
     </div>
   </div>
 </div>

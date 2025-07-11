@@ -1,40 +1,43 @@
 <div>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a routerLink="/" class="navbar-brand">{{ title() }}</a>
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a routerLink="/home" class="nav-link">Home</a> <!-- Basic home link -->
-      </li>
-      <li class="nav-item" *ngIf="isLoggedIn"> <!-- Show Dashboard if logged in -->
-        <a routerLink="/dashboard" class="nav-link">Dashboard</a>
-      </li>
-       <li class="nav-item"> <!-- Documentation link always visible -->
-        <a routerLink="/docs" class="nav-link">Docs</a>
-      </li>
-    </ul>
+  <nav class="bg-gray-800 text-white p-4 shadow-md">
+    <div class="container mx-auto flex items-center justify-between">
+      <a routerLink="/" class="text-xl font-bold hover:text-gray-300">{{ title() }}</a>
 
-    <ul class="navbar-nav ml-auto">
-      <ng-container *ngIf="!isLoggedIn">
-        <li class="nav-item">
-          <a routerLink="/register" class="nav-link">Sign Up</a>
+      <ul class="flex space-x-4">
+        <li>
+          <a routerLink="/home" class="hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">Home</a>
         </li>
-        <li class="nav-item">
-          <a routerLink="/login" class="nav-link">Login</a>
+        <li *ngIf="isLoggedIn">
+          <a routerLink="/dashboard" class="hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
         </li>
-      </ng-container>
+        <li>
+          <a routerLink="/docs" class="hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">Docs</a>
+        </li>
+      </ul>
 
-      <ng-container *ngIf="isLoggedIn">
-        <li class="nav-item">
-          <a routerLink="/profile" class="nav-link">{{ username }}</a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link" (click)="logout()">LogOut</a>
-        </li>
-      </ng-container>
-    </ul>
+      <ul class="flex space-x-4 items-center">
+        <ng-container *ngIf="!isLoggedIn">
+          <li>
+            <a routerLink="/register" class="hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">Sign Up</a>
+          </li>
+          <li>
+            <a routerLink="/login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">Login</a>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <li>
+            <a routerLink="/profile" class="hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">{{ username }}</a>
+          </li>
+          <li>
+            <a href="#" (click)="logout()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm">LogOut</a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
   </nav>
 
-  <div class="container mt-3">
+  <div class="container mx-auto mt-6 p-4">
     <router-outlet></router-outlet>
   </div>
 </div>

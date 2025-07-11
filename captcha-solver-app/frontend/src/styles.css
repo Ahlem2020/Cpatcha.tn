@@ -1,1 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* You can add global styles to this file, and also import other style files */
+/* For example, if you were using Bootstrap and want to remove it, ensure any @import 'bootstrap/dist/css/bootstrap.min.css'; is deleted. */
