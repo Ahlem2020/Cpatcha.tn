@@ -1,0 +1,40 @@
+<div>
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a routerLink="/" class="navbar-brand">{{ title() }}</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a routerLink="/home" class="nav-link">Home</a> <!-- Basic home link -->
+      </li>
+      <li class="nav-item" *ngIf="isLoggedIn"> <!-- Show Dashboard if logged in -->
+        <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+      </li>
+       <li class="nav-item"> <!-- Documentation link always visible -->
+        <a routerLink="/docs" class="nav-link">Docs</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+      <ng-container *ngIf="!isLoggedIn">
+        <li class="nav-item">
+          <a routerLink="/register" class="nav-link">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/login" class="nav-link">Login</a>
+        </li>
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+        <li class="nav-item">
+          <a routerLink="/profile" class="nav-link">{{ username }}</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" (click)="logout()">LogOut</a>
+        </li>
+      </ng-container>
+    </ul>
+  </nav>
+
+  <div class="container mt-3">
+    <router-outlet></router-outlet>
+  </div>
+</div>

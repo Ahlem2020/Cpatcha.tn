@@ -1,0 +1,73 @@
+<div class="container mt-4">
+  <h2>CAPTCHA Dashboard</h2>
+
+  <!-- CAPTCHA Submission Section -->
+  <div class="card mb-4">
+    <div class="card-header">Submit New CAPTCHA</div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for="captchaFile">Choose CAPTCHA Image</label>
+        <input type="file" class="form-control-file" id="captchaFile" (change)="onFileSelected($event)" accept="image/*">
+      </div>
+
+      <div *ngIf="imagePreview" class="mt-2 mb-2">
+        <h5>Preview:</h5>
+        <img [src]="imagePreview" class="img-fluid rounded" style="max-height: 200px; border: 1px solid #ddd;" alt="Image Preview">
+      </div>
+
+      <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="progress mt-2">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" [style.width.%]="uploadProgress" [attr.aria-valuenow]="uploadProgress" aria-valuemin="0" aria-valuemax="100">
+          {{ uploadProgress }}%
+        </div>
+      </div>
+
+      <button class="btn btn-primary mt-2" (click)="submitCaptcha()" [disabled]="!selectedFile || uploadProgress > 0">
+        Submit CAPTCHA
+      </button>
+
+      <div *ngIf="submissionMessage" class="alert mt-3" [ngClass]="{'alert-success': submissionMessage.includes('success'), 'alert-danger': submissionMessage.includes('failed') || submissionMessage.includes('Error'), 'alert-info': !submissionMessage.includes('success') && !submissionMessage.includes('failed')}">
+        {{ submissionMessage }}
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPTCHA History and Updates Section -->
+  <div class="card">
+    <div class="card-header">
+      CAPTCHA Submissions
+      <button class="btn btn-sm btn-info float-right" (click)="loadHistory()">Refresh History</button>
+    </div>
+    <div class="card-body">
+      <div *ngIf="captchaSubmissions.length === 0" class="text-center text-muted">
+        No CAPTCHA submissions yet.
+      </div>
+
+      <ul class="list-group list-group-flush" *ngIf="captchaSubmissions.length > 0">
+        <li *ngFor="let item of captchaSubmissions" class="list-group-item">
+          <div class="row">
+            <div class="col-md-2">
+              <img *ngIf="item.imageDataUrl" [src]="item.imageDataUrl" class="img-thumbnail" style="max-height: 70px;" alt="CAPTCHA Image">
+              <span *ngIf="!item.imageDataUrl && item.originalFileName" class="text-muted small">{{ item.originalFileName }}</span>
+            </div>
+            <div class="col-md-7">
+              <h5 class="mb-1">ID: {{ item.id }} <span class="badge" [ngClass]="{'badge-primary': item.status === 'PENDING' || item.status === 'SOLVING', 'badge-success': item.status === 'SOLVED', 'badge-danger': item.status === 'FAILED', 'badge-secondary': !item.status }">{{ item.status || 'UNKNOWN' }}</span></h5>
+              <p class="mb-1">
+                <small>Submitted: {{ item.submittedAt | date:'medium' }}</small>
+                <small *ngIf="item.solvedAt"> | Solved: {{ item.solvedAt | date:'mediumTime' }}</small>
+              </p>
+              <strong *ngIf="item.status === 'SOLVED' && item.solution">Solution: {{ item.solution }}</strong>
+              <p *ngIf="item.message" class="text-danger small mt-1">{{ item.message }}</p>
+            </div>
+            <div class="col-md-3 text-right">
+                <button *ngIf="item.status === 'PENDING' || item.status === 'SOLVING' || item.status === 'FAILED'"
+                        class="btn btn-sm btn-outline-secondary"
+                        (click)="refreshSolution(item.id)">
+                  Check Status/Retry
+                </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
