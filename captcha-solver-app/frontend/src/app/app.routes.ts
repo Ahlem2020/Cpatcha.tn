@@ -1,23 +1,31 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/login';
-import { RegisterComponent } from './auth/register/register';
-import { CaptchaDashboardComponent } from './captcha/captcha-dashboard/captcha-dashboard'; // Import dashboard
-import { AuthGuard } from './auth/auth.guard'; // Import AuthGuard
+import { LoginComponent } from './features/auth/login/login';
+import { RegisterComponent } from './features/auth/register/register';
+import { CaptchaDashboardComponent } from './features/captcha/captcha-dashboard/captcha-dashboard';
+import { AuthGuard } from './features/auth/auth.guard';
+import { HomeComponent } from './features/home/home';
+import { ContactComponent } from './features/contact/contact';
+import { DocumentationComponent } from './features/documentation/documentation';
+import { SubscriptionComponent } from './features/subscription/subscription';
+import { AdminComponent } from './features/admin/admin';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'home', component: HomeComponent },
+    { path: 'product', component: HomeComponent },
+    { path: 'contact', component: ContactComponent },
+    { path: 'documentation', component: DocumentationComponent },
+    { path: 'subscription', component: SubscriptionComponent },
     {
       path: 'dashboard',
       component: CaptchaDashboardComponent,
-      canActivate: [AuthGuard] // Protect this route
+      canActivate: [AuthGuard]
     },
-    // Example of how to lazy load the auth module if we were using it:
-    // {
-    //   path: 'auth',
-    //   loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule)
-    // },
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default to dashboard if logged in, AuthGuard will redirect to login if not
-    // Add other routes here later
-    // { path: '**', redirectTo: 'dashboard' } // Wildcard route
+    {
+      path: 'admin',
+      component: AdminComponent,
+      canActivate: [AuthGuard]
+    },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
